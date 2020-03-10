@@ -1,0 +1,43 @@
+version: '3.1'
+services: 
+    postgres:
+        image: postgres:latest
+        restart: always
+        ports: 
+            - "8880:5432"
+        environment: 
+            POSTGRES_PASSWORD: password
+            POSTGRES_USER: forum
+            POSTGRES_DB: forum
+        networks: 
+            - forum-graphql
+        container_name:
+            postgres-db
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        ports:
+            - "8881:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: user@example.com
+            PGADMIN_DEFAULT_PASSWORD: 123456
+        depends_on:
+            - postgres
+        networks:
+            - forum-graphql
+    forum-app:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        ports:
+            - "4000:4000"
+        restart: always
+        volumes:
+            - ".:/app"
+        depends_on:
+            - postgres
+        networks:
+            - forum-graphql
+        
+networks:
+    forum-graphql:
+        driver: bridge

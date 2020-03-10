@@ -1,0 +1,41 @@
+type User {
+  id: ID! @id
+  name: String!
+  email: String!
+  password: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  posts: [Topic!]! @relation(name: "TopicToUser", onDelete: CASCADE)
+  threads: [Thread!]! @relation(name: "ThreadToUser", onDelete: CASCADE)
+  replies: [Reply!]! @relation(name: "ReplyToUser", onDelete: CASCADE)
+}
+
+type Topic {
+  id: ID! @id
+  title: String!
+  body: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  user: User! @relation(name: "TopicToUser", onDelete: SET_NULL)
+  threads: [Thread!]! @relation(name: "ThreadToTopic", onDelete: CASCADE)
+}
+
+type Thread {
+  id: ID! @id
+  title: String!
+  body: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  user: User! @relation(name: "ThreadToUser", onDelete: SET_NULL)
+  topic: Topic! @relation(name: "ThreadToTopic", onDelete: SET_NULL)
+  replies: [Reply!]! @relation(name: "ReplyToThread", onDelete: CASCADE)
+}
+
+type Reply {
+  id: ID! @id
+  text: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  user: User! @relation(name: "ReplyToUser", onDelete: SET_NULL)
+  thread: Thread! @relation(name: "ReplyToThread", onDelete: SET_NULL)
+}
