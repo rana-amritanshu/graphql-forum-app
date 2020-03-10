@@ -6,6 +6,7 @@
  - docker
  - npm
  - node
+ - prisma (npm i -g prisma)
 ---
 
 ### Instructions
