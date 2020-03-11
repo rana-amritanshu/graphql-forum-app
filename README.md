@@ -20,5 +20,5 @@
   - change the networks: name in the **prisma/docker-compose.yml** accordingly, refer root docker-compose.yml file & cross check with **(sudo) docker network ls**
   - run (sudo) docker-compose up (-d) from the prisma folder
   - run **prisma deploy** from prisma folder
-  - accessible on localhost:4466 from browser
+  - accessible on localhost:4466/forum/dev from browser
   
