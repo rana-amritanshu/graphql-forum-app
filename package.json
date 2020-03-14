@@ -4,13 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "ENVFILE=dev.env nodemon -e graphql,graphqlconfig,ts,js src/index.ts",
+    "generate-schema-dev": "graphql get-schema -p forum-app-dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "graphql-cli": "^3.0.14",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
+    "prisma-binding": "^2.3.16",
+    "uuid": "^7.0.2"
   }
 }
