@@ -1,20 +1,44 @@
 type Mutation {
-    createUser(data: CreateUserInput): AuthUser!
+    createUser(data: CreateUserInput): AuthData!
+    createTopic(data: CreateTopicInput): Topic!
+    updateTopic(id: ID!, data: UpdateTopicInput): Topic!
+    deleteTopic(id: ID!): Topic!
 }
 
 type Query {
-    login(email: String!, password: String!): AuthUser!
+    login(email: String!, password: String!): AuthData!
+    topics(query: String, user: String, first: Int, last: Int, skip: Int, after: String, before: String, orderBy: TopicOrderByInput): [Topic!]!
 }
 
+# Mutation Inputs
 input CreateUserInput {
     name: String!
     email: String!
     password: String!
 }
 
-type AuthUser {
-    data: User!
+input CreateTopicInput {
+    title: String!
+    body: String!
+}
+
+input UpdateTopicInput {
+    title: String,
+    body: String
+}
+
+type AuthData {
+    data: AuthUser!
     token: String!
+}
+
+type AuthUser {
+    id: ID!
+    name: String!
+    email: String!
+    createdAt: String!
+    updatedAt: String!
+    topics(first: Int, last: Int, skip: Int, after: String, before: String): [Topic!]!
 }
 
 type User {
@@ -23,4 +47,28 @@ type User {
     email: String!
     createdAt: String!
     updatedAt: String!
+    topics(first: Int, last: Int, skip: Int, after: String, before: String): [Topic!]!
+}
+
+type Topic {
+    id: ID!
+    title: String!
+    body: String!
+    createdAt: String!
+    updatedAt: String!
+    user: User!
+}
+
+#Enum
+enum TopicOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  body_ASC
+  body_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }

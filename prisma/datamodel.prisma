@@ -5,7 +5,7 @@ type User {
   password: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  posts: [Topic!]! @relation(name: "TopicToUser", onDelete: CASCADE)
+  topics: [Topic!]! @relation(name: "TopicToUser", onDelete: CASCADE)
   threads: [Thread!]! @relation(name: "ThreadToUser", onDelete: CASCADE)
   replies: [Reply!]! @relation(name: "ReplyToUser", onDelete: CASCADE)
 }
