@@ -3,11 +3,19 @@ type Mutation {
     createTopic(data: CreateTopicInput): Topic!
     updateTopic(id: ID!, data: UpdateTopicInput): Topic!
     deleteTopic(id: ID!): Topic!
+    createThread(topic: String!, data: CreateThreadInput): Thread!
+    updateThread(id: ID!, data: UpdateThreadInput): Thread!
+    deleteThread(id: ID!): Thread!
+    createReply(thread: String!, data: CreateReplyInput): Reply!
+    updateReply(id: ID!, data: UpdateReplyInput): Reply!
+    deleteReply(id: ID!): Reply!
 }
 
 type Query {
     login(email: String!, password: String!): AuthData!
     topics(query: String, user: String, first: Int, last: Int, skip: Int, after: String, before: String, orderBy: TopicOrderByInput): [Topic!]!
+    threads(query: String, user: String, topic: String, first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ThreadOrderByInput): [Thread!]!
+    replies(query: String, user: String, thread: String!, first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ReplyOrderByInput): [Reply!]!
 }
 
 # Mutation Inputs
@@ -27,6 +35,24 @@ input UpdateTopicInput {
     body: String
 }
 
+input CreateThreadInput {
+    title: String!
+    body: String!
+}
+
+input UpdateThreadInput {
+    title: String
+    body: String
+}
+
+input CreateReplyInput {
+    text: String!
+}
+
+input UpdateReplyInput {
+    text: String
+}
+
 type AuthData {
     data: AuthUser!
     token: String!
@@ -38,7 +64,6 @@ type AuthUser {
     email: String!
     createdAt: String!
     updatedAt: String!
-    topics(first: Int, last: Int, skip: Int, after: String, before: String): [Topic!]!
 }
 
 type User {
@@ -47,7 +72,9 @@ type User {
     email: String!
     createdAt: String!
     updatedAt: String!
-    topics(first: Int, last: Int, skip: Int, after: String, before: String): [Topic!]!
+    topics(first: Int, last: Int, skip: Int, after: String, before: String, orderBy: TopicOrderByInput): [Topic!]!
+    threads(first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ThreadOrderByInput): [Thread!]!
+    replies(first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ReplyOrderByInput): [Thread!]!
 }
 
 type Topic {
@@ -57,6 +84,27 @@ type Topic {
     createdAt: String!
     updatedAt: String!
     user: User!
+    threads(first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ThreadOrderByInput): [Thread!]!
+}
+
+type Thread {
+    id: ID!
+    title: String!
+    body: String!
+    createdAt: String!
+    updatedAt: String!
+    user: User!
+    topic: Topic!
+    replies(first: Int, last: Int, skip: Int, after: String, before: String, orderBy: ThreadOrderByInput): [Reply!]!
+}
+
+type Reply {
+    id: ID!
+    text: String!
+    createdAt: String!
+    updatedAt: String!
+    user: User!
+    thread: Thread!
 }
 
 #Enum
@@ -67,6 +115,30 @@ enum TopicOrderByInput {
   title_DESC
   body_ASC
   body_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+enum ThreadOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  body_ASC
+  body_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+enum ReplyOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC

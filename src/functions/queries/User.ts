@@ -5,6 +5,7 @@ import { Context } from "../../Interfaces/GraphQL";
 import { CreateUserMutation } from '../../Interfaces/User';
 
 export const login = async (parent: any, {email, password}: LoginArgs, {prisma}: Context, info: any): Promise<CreateUserMutation> => {
+    console.log(JSON.stringify(info, undefined, 2));
     const user = await prisma.query.user({
         where: {
             email
